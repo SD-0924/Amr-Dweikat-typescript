@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      form {
+        margin-left: 40px;
+        margin-top: 40px;
+      }
+      input,
+      button {
+        font-size: 20px;
+        margin-bottom: 20px;
+      }
+      button {
+        width: 255px;
+      }
+    </style>
+  </head>
+  <body>
+    <form action="/uploadImage" method="POST" enctype="multipart/form-data">
+      <div>
+        <h1>Upload Image</h1>
+        <input type="file" name="image" required />
+      </div>
+      <button type="submit">Upload Image</button>
+    </form>
+  </body>
+</html>
