@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 // Import multer module
 import multer from "multer";
 
+// Import sharp module
+import sharp from "sharp";
+
 // Import path module
 import path from "path";
 
@@ -48,24 +51,17 @@ const fileFilter = (
   cb(null, true);
 };
 
-const upload = multer({ storage, fileFilter });
+export const upload = multer({ storage, fileFilter });
 
-// Upload Image Function
-export const uploadImage = (req: Request, res: Response) => {
-  upload.single("image")(req, res, (err) => {
-    if (err || !req.file) {
-      if (req.fileFilterMessage) {
-        return res.status(400).json({
-          error: "Invalid body request",
-          message: req.fileFilterMessage,
-        });
+// Resize Image Function
+export const resizeImage = async (imageName: string): Promise<any> => {
+  const imagePath = path.join(__dirname, `../${imageName}`);
+  sharp(imagePath)
+    .resize(320, 240)
+    .toFile(imagePath, (err, info) => {
+      if (err) {
+        console.log(err);
       }
-      return res.status(400).json({
-        error: "Invalid body request",
-        message:
-          "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
-      });
-    }
-    res.status(201).json({ message: "Image uploaded successfully" });
-  });
+      console.log(info);
+    });
 };
