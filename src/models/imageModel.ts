@@ -60,21 +60,23 @@ export const upload = multer({ storage, fileFilter });
 export const croppImage = async (
   imageName: string,
   width: number,
-  height: number
+  height: number,
+  x: number,
+  y: number
 ): Promise<any> => {
-  const imagePath = path.join(__dirname, `../images/${imageName}`);
-  sharp(imagePath)
-    .resize(width, height)
-    .toFile(imageName, (err, info) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      try {
-        fs.unlinkSync(imagePath);
-        fs.renameSync(path.join(__dirname, `../../${imageName}`), imagePath);
-      } catch (err) {
-        console.log(err);
-      }
-    });
+  const imageBuffer = fs.readFileSync(
+    path.join(__dirname, "..", "images", imageName)
+  );
+  const croppedImage = await sharp(imageBuffer)
+    .extract({
+      left: Math.floor(x),
+      top: Math.floor(y),
+      width: Math.floor(width),
+      height: Math.floor(height),
+    })
+    .toBuffer();
+  fs.writeFileSync(
+    path.join(__dirname, "..", "images", imageName),
+    croppedImage
+  );
 };

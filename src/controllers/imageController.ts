@@ -26,7 +26,9 @@ export const croppImage = async (req: Request, res: Response) => {
   await imageModel.croppImage(
     req.params.imageName,
     req.body.width,
-    req.body.height
+    req.body.height,
+    req.body.x,
+    req.body.y
   );
   res.status(200).json({ message: "Image cropped successfully" });
 };

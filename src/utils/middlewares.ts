@@ -68,12 +68,14 @@ export const imageResolutionExists = (
   if (
     !req.body ||
     !req.body.hasOwnProperty("width") ||
-    !req.body.hasOwnProperty("height")
+    !req.body.hasOwnProperty("height") ||
+    !req.body.hasOwnProperty("x") ||
+    !req.body.hasOwnProperty("y")
   ) {
     return res.status(400).json({
       error: "Invalid body request",
       message:
-        "You need to provide valid JSON structue that contains the 'width' and 'height' properties",
+        "You need to provide valid JSON structue that contains the 'width' , 'height' , 'x' and 'y' properties",
     });
   }
   next();
@@ -97,6 +99,20 @@ export const validateImageResolution = (
     return res.status(400).json({
       error: "Invalid height value",
       message: "The height value should be positive number",
+    });
+
+  const x = req.body.height;
+  if (!x || typeof x !== "number" || x < 0)
+    return res.status(400).json({
+      error: "Invalid x value",
+      message: "The x value should be positive number",
+    });
+
+  const y = req.body.height;
+  if (!y || typeof y !== "number" || y < 0)
+    return res.status(400).json({
+      error: "Invalid y value",
+      message: "The y value should be positive number",
     });
 
   next();
