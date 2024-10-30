@@ -8,7 +8,7 @@ import multer from "multer";
 import path from "path";
 
 // Import isImageExist method to chek if image already exist or not
-import { isImageExist } from "../utils/errorHandler";
+import { isImageExist, isValidImage } from "../utils/errorHandler";
 
 // Setup multer storage
 const storage = multer.diskStorage({
@@ -29,18 +29,13 @@ declare global {
   }
 }
 
-// File filter to validate file type and size
+// File filter to validate file type
 const fileFilter = (
   req: Request,
   file: Express.Multer.File,
   cb: multer.FileFilterCallback
 ) => {
-  // Check file type
-  const filetypes = /jpeg|jpg|png|gif/;
-  const mimetype = filetypes.test(file.mimetype);
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-  if (!mimetype || !extname) {
+  if (!isValidImage(file.mimetype, file.originalname)) {
     req.fileFilterMessage = "You should upload image";
     return cb(null, false);
   }
