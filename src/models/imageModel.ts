@@ -10,6 +10,9 @@ import sharp from "sharp";
 // Import path module
 import path from "path";
 
+// Import file system module
+import fs from "fs";
+
 // Import isImageExist method to chek if image already exist or not
 import { isImageExist, isValidImage } from "../utils/middlewares";
 
@@ -55,13 +58,12 @@ export const upload = multer({ storage, fileFilter });
 
 // Resize Image Function
 export const resizeImage = async (imageName: string): Promise<any> => {
-  const imagePath = path.join(__dirname, `../${imageName}`);
+  const imagePath = path.join(__dirname, `../images/${imageName}`);
   sharp(imagePath)
-    .resize(320, 240)
-    .toFile(imagePath, (err, info) => {
+    .resize(320, 0)
+    .toFile("amr.png", (err, info) => {
       if (err) {
         console.log(err);
       }
-      console.log(info);
     });
 };

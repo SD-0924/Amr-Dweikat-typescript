@@ -58,3 +58,42 @@ export const imageExists = (
   }
   next();
 };
+
+// Middlware to check new resolution image provided or not
+export const imageResolutionExists = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (
+    !req.body ||
+    (!req.body.hasOwnProperty("width") && !req.body.hasOwnProperty("height"))
+  ) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "You need to provide valid JSON structue that contains either the 'width' or 'height' or both properties",
+    });
+  }
+  next();
+};
+
+// Middlware to check image resolution
+export const validateImageResolution = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (req.body.hasOwnProperty("width")) {
+    if (
+      !req.body.width ||
+      typeof req.body.width !== "number" ||
+      req.body.width < 0
+    )
+      return res.status(400).json({
+        error: "Invalid width value",
+        message: "The width value should be positive number",
+      });
+  }
+  next();
+};

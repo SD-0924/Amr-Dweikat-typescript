@@ -9,7 +9,7 @@ export const invalidRoute = (req: Request, res: Response): void => {
   });
 };
 
-// Error handling middleware for syntax errors
+// Error handling middleware for JSON syntax errors and invalid form data
 export const invalidJSON = (
   err: any,
   req: Request,
@@ -17,11 +17,15 @@ export const invalidJSON = (
   next: NextFunction
 ): any => {
   if (err instanceof SyntaxError && "body" in err) {
-    return res
-      .status(400)
-      .json({
-        error: "Invalid JSON structure",
-        message: "Please provide valid JSON",
-      });
+    return res.status(400).json({
+      error: "Invalid JSON structure",
+      message: "Please provide valid JSON",
+    });
+  } else {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
+    });
   }
 };
