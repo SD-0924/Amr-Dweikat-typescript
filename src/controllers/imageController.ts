@@ -8,3 +8,8 @@ import * as imageModel from "../models/imageModel";
 export const uploadImage = (req: Request, res: Response) => {
   imageModel.uploadImage(req, res);
 };
+
+// Upload Image Function
+export const resizeImage = (req: Request, res: Response) => {
+  imageModel.uploadImage(req, res);
+};
