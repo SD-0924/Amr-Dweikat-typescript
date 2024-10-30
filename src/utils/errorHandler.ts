@@ -16,5 +16,10 @@ export const invalidRoute = (req: Request, res: Response): void => {
 };
 
 // Handle invalid JSON
-export const isImageExist = (imageName: string): boolean =>
-  fs.existsSync(path.join(__dirname, "../", imageName));
+export const isImageExist = (imageName: string): boolean => {
+  const images = fs.readdirSync(path.join(__dirname, `../images`));
+  if (images.indexOf(imageName) === -1) {
+    return false;
+  }
+  return true;
+};

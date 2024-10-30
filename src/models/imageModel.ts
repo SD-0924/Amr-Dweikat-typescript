@@ -45,18 +45,12 @@ const fileFilter = (
     return cb(null, false);
   }
 
-  console.log(
-    isImageExist(file.originalname),
-    file.originalname,
-    typeof file.originalname
-  );
-
   if (isImageExist(file.originalname)) {
     req.fileFilterMessage = "The image that you tried to upload already exists";
     return cb(null, false);
   }
 
-  cb(null, true); // Accept the file
+  cb(null, true);
 };
 
 const upload = multer({ storage, fileFilter });
@@ -65,8 +59,6 @@ const upload = multer({ storage, fileFilter });
 export const uploadImage = (req: Request, res: Response) => {
   upload.single("image")(req, res, (err) => {
     if (err || !req.file) {
-      console.log(req.fileFilterMessage);
-
       if (req.fileFilterMessage) {
         return res.status(400).json({
           error: "Invalid body request",
@@ -79,11 +71,6 @@ export const uploadImage = (req: Request, res: Response) => {
           "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
       });
     }
-
-    console.log(req.file);
-
-    res
-      .status(200)
-      .json({ message: "Image uploaded successfully", file: req.file });
+    res.status(200).json({ message: "Image uploaded successfully" });
   });
 };
