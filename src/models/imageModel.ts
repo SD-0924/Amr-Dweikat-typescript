@@ -56,13 +56,24 @@ const fileFilter = (
 
 export const upload = multer({ storage, fileFilter });
 
-// Resize Image Function
-export const resizeImage = async (imageName: string): Promise<any> => {
+// Cropp Image Function
+export const croppImage = async (
+  imageName: string,
+  width: number,
+  height: number
+): Promise<any> => {
   const imagePath = path.join(__dirname, `../images/${imageName}`);
   sharp(imagePath)
-    .resize(320, 0)
-    .toFile("amr.png", (err, info) => {
+    .resize(width, height)
+    .toFile(imageName, (err, info) => {
       if (err) {
+        console.log(err);
+        return;
+      }
+      try {
+        fs.unlinkSync(imagePath);
+        fs.renameSync(path.join(__dirname, `../../${imageName}`), imagePath);
+      } catch (err) {
         console.log(err);
       }
     });

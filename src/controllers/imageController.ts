@@ -1,6 +1,9 @@
 // Import Request and Response from express module
 import { Request, Response } from "express";
 
+// Import all methods from imageModel module
+import * as imageModel from "../models/imageModel";
+
 // Upload Image Function
 export const uploadImage = (req: Request, res: Response): any => {
   if (!req.file) {
@@ -18,8 +21,12 @@ export const uploadImage = (req: Request, res: Response): any => {
   res.status(201).json({ message: "Image uploaded successfully" });
 };
 
-// Upload Image Function
-export const resizeImage = async (req: Request, res: Response) => {
-  // await imageModel.resizeImage(req.params.imageName);
-  res.status(200).json({ message: "Image resized successfully" });
+// Cropp Image Function
+export const croppImage = async (req: Request, res: Response) => {
+  await imageModel.croppImage(
+    req.params.imageName,
+    req.body.width,
+    req.body.height
+  );
+  res.status(200).json({ message: "Image cropped successfully" });
 };

@@ -7,7 +7,7 @@ import path from "path";
 // Import Request , Response and NextFunction from express module
 import { Request, Response, NextFunction } from "express";
 
-// Check if valid image or not by checking the extension
+// Function to check if valid image or not by checking the extension
 export const isValidImage = (fileName: string): boolean => {
   const filetypes = /jpeg|jpg|png|gif/;
   const extname = filetypes.test(path.extname(fileName).toLowerCase());
@@ -19,7 +19,7 @@ export const isValidImage = (fileName: string): boolean => {
   return true;
 };
 
-// Check if image exist alreay or not
+// Function to check if image exist alreay or not
 export const isImageExist = (imageName: string): boolean => {
   const images = fs.readdirSync(path.join(__dirname, `../images`));
   if (images.indexOf(imageName) === -1) {
@@ -67,12 +67,13 @@ export const imageResolutionExists = (
 ): any => {
   if (
     !req.body ||
-    (!req.body.hasOwnProperty("width") && !req.body.hasOwnProperty("height"))
+    !req.body.hasOwnProperty("width") ||
+    !req.body.hasOwnProperty("height")
   ) {
     return res.status(400).json({
       error: "Invalid body request",
       message:
-        "You need to provide valid JSON structue that contains either the 'width' or 'height' or both properties",
+        "You need to provide valid JSON structue that contains the 'width' and 'height' properties",
     });
   }
   next();
@@ -84,16 +85,19 @@ export const validateImageResolution = (
   res: Response,
   next: NextFunction
 ): any => {
-  if (req.body.hasOwnProperty("width")) {
-    if (
-      !req.body.width ||
-      typeof req.body.width !== "number" ||
-      req.body.width < 0
-    )
-      return res.status(400).json({
-        error: "Invalid width value",
-        message: "The width value should be positive number",
-      });
-  }
+  const width = req.body.width;
+  if (!width || typeof width !== "number" || width < 0)
+    return res.status(400).json({
+      error: "Invalid width value",
+      message: "The width value should be positive number",
+    });
+
+  const height = req.body.height;
+  if (!height || typeof height !== "number" || height < 0)
+    return res.status(400).json({
+      error: "Invalid height value",
+      message: "The height value should be positive number",
+    });
+
   next();
 };

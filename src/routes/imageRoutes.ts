@@ -18,15 +18,15 @@ router.post(
   imageController.uploadImage
 );
 
-// Route for image resize
+// Route for image cropp
 router.put(
-  "/resize/:imageName",
+  "/cropp/:imageName",
   middlewares.validateImageName,
   middlewares.imageExists,
   express.json(),
   middlewares.imageResolutionExists,
   middlewares.validateImageResolution,
-  imageController.resizeImage
+  imageController.croppImage
 );
 
 export default router;
