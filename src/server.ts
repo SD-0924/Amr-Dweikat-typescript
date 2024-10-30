@@ -5,7 +5,7 @@ import express from "express";
 import path from "path";
 
 // Import all error handler methods from errorHandler module
-import { invalidRoute, invalidJson } from "./utils/errorHandler";
+import { invalidRoute } from "./utils/errorHandler";
 
 // Import all mesthods inside imageRoutes module
 import imageRoutes from "./routes/imageRoutes";
@@ -17,9 +17,7 @@ const app = express();
 const HOSTNAME = "localhost";
 const PORT = 3000;
 
-// Middleware
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+// Middleware to make images folder as static folder
 app.use(express.static(path.join(__dirname, "images")));
 
 // POST route to store image inside images folder
