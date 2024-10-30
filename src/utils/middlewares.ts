@@ -34,8 +34,27 @@ export const validateImageName = (
   res: Response,
   next: NextFunction
 ): any => {
-  //   if (!isValidImage(req.params.imageName)) {
-  //     return false;
-  //   }
-  return true;
+  if (!req.params.imageName || !isValidImage(req.params.imageName)) {
+    return res.status(400).json({
+      error: "Invalid URL request",
+      message: "The provided image name in URL is invalid",
+    });
+  }
+  next();
+};
+
+// Middlware to check image exist or not
+export const imageExists = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (!isImageExist(req.params.imageName)) {
+    return res.status(404).json({
+      error: "Image not found",
+      message:
+        "The provided image that you want to work on does not exist in our system",
+    });
+  }
+  next();
 };

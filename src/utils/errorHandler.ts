@@ -1,5 +1,5 @@
-// Import Request and Response from express module
-import { Request, Response } from "express";
+// Import Request , Response and NextFunction from express module
+import { Request, Response, NextFunction } from "express";
 
 // Handle invalid route
 export const invalidRoute = (req: Request, res: Response): void => {
@@ -7,4 +7,21 @@ export const invalidRoute = (req: Request, res: Response): void => {
     error: "Not Found",
     message: "Sorry, that route does not exist",
   });
+};
+
+// Error handling middleware for syntax errors
+export const invalidJSON = (
+  err: any,
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (err instanceof SyntaxError && "body" in err) {
+    return res
+      .status(400)
+      .json({
+        error: "Invalid JSON structure",
+        message: "Please provide valid JSON",
+      });
+  }
 };

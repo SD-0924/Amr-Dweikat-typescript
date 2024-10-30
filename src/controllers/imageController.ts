@@ -11,5 +11,5 @@ export const uploadImage = (req: Request, res: Response) => {
 
 // Upload Image Function
 export const resizeImage = (req: Request, res: Response) => {
-  imageModel.uploadImage(req, res);
+  res.json({ message: "resize done" });
 };

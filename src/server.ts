@@ -5,7 +5,7 @@ import express from "express";
 import path from "path";
 
 // Import all error handler methods from errorHandler module
-import { invalidRoute } from "./utils/errorHandler";
+import { invalidRoute, invalidJSON } from "./utils/errorHandler";
 
 // Import all mesthods inside imageRoutes module
 import imageRoutes from "./routes/imageRoutes";
@@ -25,6 +25,9 @@ app.use("/images", imageRoutes);
 
 // Middleware to handle invalid routes
 app.use(invalidRoute);
+
+// Middleware to handle invalid JSON structure
+app.use(invalidJSON);
 
 // Start the server
 app.listen(PORT, HOSTNAME, () => {

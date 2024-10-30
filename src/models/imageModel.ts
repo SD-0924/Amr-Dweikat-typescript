@@ -66,6 +66,6 @@ export const uploadImage = (req: Request, res: Response) => {
           "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
       });
     }
-    res.status(200).json({ message: "Image uploaded successfully" });
+    res.status(201).json({ message: "Image uploaded successfully" });
   });
 };
