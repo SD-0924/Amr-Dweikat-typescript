@@ -4,9 +4,8 @@ import { Request, Response, NextFunction } from "express";
 // Handle invalid route
 export const invalidRoute = (req: Request, res: Response): void => {
   res.status(404).json({
-    message: "Invalid route",
-    details:
-      "Please use one of the available routes: /, /create, or /files/filename",
+    error: "Not Found",
+    message: "Sorry, that route does not exist.",
   });
 };
 
@@ -18,6 +17,6 @@ export const invalidJson = (
   next: NextFunction
 ): void => {
   if (err instanceof SyntaxError && "body" in err) {
-    res.status(400).json({ error: "Invalid JSON format" });
+    res.status(400).json({ message: "Error", details: "Invalid JSON format" });
   }
 };
