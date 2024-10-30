@@ -20,6 +20,15 @@ const storage = multer.diskStorage({
   },
 });
 
+// Declare new property inside request parameter
+declare global {
+  namespace Express {
+    interface Request {
+      fileFilterMessage?: string;
+    }
+  }
+}
+
 // File filter to validate file type and size
 const fileFilter = (
   req: Request,
@@ -30,9 +39,20 @@ const fileFilter = (
   const filetypes = /jpeg|jpg|png|gif/;
   const mimetype = filetypes.test(file.mimetype);
   const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  console.log(file.originalname);
 
-  if (!mimetype || !extname || isImageExist(file.originalname)) {
+  if (!mimetype || !extname) {
+    req.fileFilterMessage = "You should upload image";
+    return cb(null, false);
+  }
+
+  console.log(
+    isImageExist(file.originalname),
+    file.originalname,
+    typeof file.originalname
+  );
+
+  if (isImageExist(file.originalname)) {
+    req.fileFilterMessage = "The image that you tried to upload already exists";
     return cb(null, false);
   }
 
@@ -44,8 +64,15 @@ const upload = multer({ storage, fileFilter });
 // Upload Image Function
 export const uploadImage = (req: Request, res: Response) => {
   upload.single("image")(req, res, (err) => {
-    console.log(req.file);
     if (err || !req.file) {
+      console.log(req.fileFilterMessage);
+
+      if (req.fileFilterMessage) {
+        return res.status(400).json({
+          error: "Invalid body request",
+          message: req.fileFilterMessage,
+        });
+      }
       return res.status(400).json({
         error: "Invalid body request",
         message:
