@@ -239,12 +239,7 @@ export const xAndYProperitiesExists = (
   res: Response,
   next: NextFunction
 ): any => {
-  if (
-    !req.body ||
-    !req.body.keyValuePairs ||
-    !req.body.keyValuePairs.hasOwnProperty("x") ||
-    !req.body.keyValuePairs.hasOwnProperty("y")
-  ) {
+  if (!req.body || !("x" in req.body) || !("y" in req.body)) {
     return res.status(400).json({
       error: "Invalid body request",
       message:
@@ -260,16 +255,30 @@ export const validatexAndYProperities = (
   res: Response,
   next: NextFunction
 ): any => {
-  const x = req.body.keyValuePairs.x;
-  if (typeof x !== "number" || x < 0 || !Number.isInteger(x)) {
+  try {
+    const x = Number(req.body.x);
+    if (!Number.isInteger(x)) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message: "The x value can be either 0 or positive integer number",
+      });
+    }
+  } catch (err) {
     return res.status(400).json({
       error: "Invalid body request",
       message: "The x value can be either 0 or positive integer number",
     });
   }
 
-  const y = req.body.keyValuePairs.y;
-  if (typeof y !== "number" || y < 0 || !Number.isInteger(y)) {
+  try {
+    const y = Number(req.body.y);
+    if (!Number.isInteger(y)) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message: "The y value can be either 0 or positive integer number",
+      });
+    }
+  } catch (err) {
     return res.status(400).json({
       error: "Invalid body request",
       message: "The y value can be either 0 or positive integer number",

@@ -25,7 +25,7 @@ export const invalidJSON = (
     return res.status(400).json({
       error: "Invalid body request",
       message:
-        "Some keys take wrong value please double check again then send form again",
+        "Either you need to enter valid form-data format or some keys have wrong value",
     });
   }
 };
