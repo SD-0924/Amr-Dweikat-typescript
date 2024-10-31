@@ -25,7 +25,7 @@ export const invalidJSON = (
     return res.status(400).json({
       error: "Invalid body request",
       message:
-        "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
+        "Some keys take wrong value please double check again then send form again",
     });
   }
 };

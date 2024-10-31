@@ -62,13 +62,14 @@ router.put(
 );
 
 // Route for image filter (watermarking)
-router.put(
+router.patch(
   "/filter/:imageName",
   middlewares.validateImageName,
   middlewares.imageExists,
-  imageModel.upload.single("image"),
-  middlewares.typePropertyExists,
-  middlewares.validateTypeProperty,
+  imageModel.waterMakingUpload.single("image"),
+  middlewares.validateImage,
+  middlewares.xAndYProperitiesExists,
+  middlewares.validatexAndYProperities,
   imageController.filterImage
 );
 

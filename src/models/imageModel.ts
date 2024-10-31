@@ -26,6 +26,16 @@ const storage = multer.diskStorage({
   },
 });
 
+// Setup multer storage
+const waterWorkingStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "../uploads"));
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${file.originalname}`);
+  },
+});
+
 // Declare new property inside request parameter
 declare global {
   namespace Express {
@@ -54,7 +64,26 @@ const fileFilter = (
   cb(null, true);
 };
 
+// File filter to validate file type
+const waterMakingFilter = (
+  req: Request,
+  file: Express.Multer.File,
+  cb: multer.FileFilterCallback
+) => {
+  if (!isValidImage(file.originalname)) {
+    req.fileFilterMessage = "Invalid image file";
+    return cb(null, false);
+  }
+
+  cb(null, true);
+};
+
 export const upload = multer({ storage, fileFilter });
+
+export const waterMakingUpload = multer({
+  storage: waterWorkingStorage,
+  fileFilter: waterMakingFilter,
+});
 
 // Resize Image Function
 export const resizeImage = async (

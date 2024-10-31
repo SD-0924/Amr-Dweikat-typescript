@@ -49,6 +49,6 @@ export const downloadImage = (req: Request, res: Response) => {
 
 // Filter Image Function
 export const filterImage = (req: Request, res: Response) => {
-  imageModel.filterImage(req.params.imageName, req.body.type, req.body.value);
+  // imageModel.filterImage(req.params.imageName, req.body.type, req.body.value);
   res.status(200).json({ message: "Image filterd successfully" });
 };

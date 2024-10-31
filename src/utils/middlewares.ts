@@ -56,6 +56,7 @@ export const validateImage = (
         message: req.fileFilterMessage,
       });
     }
+
     return res.status(400).json({
       error: "Invalid body request",
       message:
@@ -227,6 +228,52 @@ export const validateTypeProperty = (
           "The value of the 'value' property should be greater than 0 and less than or equal to 100",
       });
     }
+  }
+
+  next();
+};
+
+// Middlware to check x and y properties provided or not
+export const xAndYProperitiesExists = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (
+    !req.body ||
+    !req.body.keyValuePairs ||
+    !req.body.keyValuePairs.hasOwnProperty("x") ||
+    !req.body.keyValuePairs.hasOwnProperty("y")
+  ) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "You need to provide 'x' and 'y' properties beside 'image' property",
+    });
+  }
+  next();
+};
+
+// Middlware to check x and y properties valid or not
+export const validatexAndYProperities = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  const x = req.body.keyValuePairs.x;
+  if (typeof x !== "number" || x < 0 || !Number.isInteger(x)) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message: "The x value can be either 0 or positive integer number",
+    });
+  }
+
+  const y = req.body.keyValuePairs.y;
+  if (typeof y !== "number" || y < 0 || !Number.isInteger(y)) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message: "The y value can be either 0 or positive integer number",
+    });
   }
 
   next();
