@@ -82,6 +82,23 @@ export const resizeImage = async (
   }
 };
 
+/*
+Crop works like this:
+
+Y-axis (height)
+|
+|   (0, 0)
+|    +--------------------+
+|    |                    |
+|    |                    |
+|    |                    |   <-- Full Image
+|    |                    |
+|    |                    |
+|    +--------------------+
+|    (0, height)
+|
++----------------------------------- X-axis (width)
+*/
 // Cropp Image Function
 export const croppImage = async (
   imageName: string,
