@@ -18,6 +18,17 @@ router.post(
   imageController.uploadImage
 );
 
+// Route for image resize
+router.patch(
+  "/resize/:imageName",
+  middlewares.validateImageName,
+  middlewares.imageExists,
+  express.json(),
+  middlewares.imageResolutionExists,
+  middlewares.validateImageResolution,
+  imageController.resizeImage
+);
+
 // Route for image cropp
 router.put(
   "/cropp/:imageName",

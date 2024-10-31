@@ -65,19 +65,34 @@ export const imageResolutionExists = (
   res: Response,
   next: NextFunction
 ): any => {
-  if (
-    !req.body ||
-    !req.body.hasOwnProperty("width") ||
-    !req.body.hasOwnProperty("height") ||
-    !req.body.hasOwnProperty("x") ||
-    !req.body.hasOwnProperty("y")
-  ) {
-    return res.status(400).json({
-      error: "Invalid body request",
-      message:
-        "You need to provide valid JSON structue that contains the 'width' , 'height' , 'x' and 'y' properties",
-    });
+  if (req.method === "PATCH") {
+    if (
+      !req.body ||
+      !req.body.hasOwnProperty("width") ||
+      !req.body.hasOwnProperty("height")
+    ) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message:
+          "You need to provide valid JSON structue that contains the 'width' and 'height' properties",
+      });
+    }
+  } else {
+    if (
+      !req.body ||
+      !req.body.hasOwnProperty("width") ||
+      !req.body.hasOwnProperty("height") ||
+      !req.body.hasOwnProperty("x") ||
+      !req.body.hasOwnProperty("y")
+    ) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message:
+          "You need to provide valid JSON structue that contains the 'width' , 'height' , 'x' and 'y' properties",
+      });
+    }
   }
+
   next();
 };
 
@@ -101,19 +116,21 @@ export const validateImageResolution = (
       message: "The height value should be positive number",
     });
 
-  const x = req.body.height;
-  if (!x || typeof x !== "number" || x < 0)
-    return res.status(400).json({
-      error: "Invalid x value",
-      message: "The x value should be positive number",
-    });
+  if (req.method !== "PATCH") {
+    const x = req.body.x;
+    if (!x || typeof x !== "number" || x < 0)
+      return res.status(400).json({
+        error: "Invalid x value",
+        message: "The x value should be positive number",
+      });
 
-  const y = req.body.height;
-  if (!y || typeof y !== "number" || y < 0)
-    return res.status(400).json({
-      error: "Invalid y value",
-      message: "The y value should be positive number",
-    });
+    const y = req.body.y;
+    if (!y || typeof y !== "number" || y < 0)
+      return res.status(400).json({
+        error: "Invalid y value",
+        message: "The y value should be positive number",
+      });
+  }
 
   next();
 };
