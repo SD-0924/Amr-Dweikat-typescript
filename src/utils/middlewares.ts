@@ -103,32 +103,42 @@ export const validateImageResolution = (
   next: NextFunction
 ): any => {
   const width = req.body.width;
-  if (!width || typeof width !== "number" || width < 0)
+  if (
+    !width ||
+    typeof width !== "number" ||
+    width < 0 ||
+    !Number.isInteger(width)
+  )
     return res.status(400).json({
       error: "Invalid width value",
-      message: "The width value should be positive number",
+      message: "The width value should be positive integer number",
     });
 
   const height = req.body.height;
-  if (!height || typeof height !== "number" || height < 0)
+  if (
+    !height ||
+    typeof height !== "number" ||
+    height < 0 ||
+    !Number.isInteger(height)
+  )
     return res.status(400).json({
       error: "Invalid height value",
-      message: "The height value should be positive number",
+      message: "The height value should be positive integer number",
     });
 
   if (req.method !== "PATCH") {
     const x = req.body.x;
-    if (!x || typeof x !== "number" || x < 0)
+    if (!x || typeof x !== "number" || x < 0 || !Number.isInteger(x))
       return res.status(400).json({
         error: "Invalid x value",
-        message: "The x value should be positive number",
+        message: "The x value should be positive integer number",
       });
 
     const y = req.body.y;
-    if (!y || typeof y !== "number" || y < 0)
+    if (!y || typeof y !== "number" || y < 0 || !Number.isInteger(y))
       return res.status(400).json({
         error: "Invalid y value",
-        message: "The y value should be positive number",
+        message: "The y value should be positive integer number",
       });
   }
 

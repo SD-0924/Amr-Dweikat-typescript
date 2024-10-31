@@ -56,6 +56,32 @@ const fileFilter = (
 
 export const upload = multer({ storage, fileFilter });
 
+// Resize Image Function
+export const resizeImage = async (
+  imageName: string,
+  width: number,
+  height: number
+): Promise<any> => {
+  try {
+    const imageBuffer = fs.readFileSync(
+      path.join(__dirname, "..", "images", imageName)
+    );
+    const resizedImage = await sharp(imageBuffer)
+      .resize({
+        width: width,
+        height: height,
+        fit: sharp.fit.inside,
+      })
+      .toBuffer();
+    fs.writeFileSync(
+      path.join(__dirname, "..", "images", imageName),
+      resizedImage
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 // Cropp Image Function
 export const croppImage = async (
   imageName: string,
@@ -64,21 +90,25 @@ export const croppImage = async (
   x: number,
   y: number
 ): Promise<any> => {
-  const imageBuffer = fs.readFileSync(
-    path.join(__dirname, "..", "images", imageName)
-  );
-  const croppedImage = await sharp(imageBuffer)
-    .extract({
-      left: Math.floor(x),
-      top: Math.floor(y),
-      width: Math.floor(width),
-      height: Math.floor(height),
-    })
-    .toBuffer();
-  fs.writeFileSync(
-    path.join(__dirname, "..", "images", imageName),
-    croppedImage
-  );
+  try {
+    const imageBuffer = fs.readFileSync(
+      path.join(__dirname, "..", "images", imageName)
+    );
+    const croppedImage = await sharp(imageBuffer)
+      .extract({
+        left: x,
+        top: y,
+        width: width,
+        height: height,
+      })
+      .toBuffer();
+    fs.writeFileSync(
+      path.join(__dirname, "..", "images", imageName),
+      croppedImage
+    );
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 // Download Image Function

@@ -26,12 +26,10 @@ export const uploadImage = (req: Request, res: Response): any => {
 
 // Resize Image Function
 export const resizeImage = async (req: Request, res: Response) => {
-  await imageModel.croppImage(
+  await imageModel.resizeImage(
     req.params.imageName,
     req.body.width,
-    req.body.height,
-    req.body.x,
-    req.body.y
+    req.body.height
   );
   res.status(200).json({ message: "Image resized successfully" });
 };
