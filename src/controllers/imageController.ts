@@ -48,20 +48,34 @@ export const downloadImage = (req: Request, res: Response) => {
 };
 
 // Filter Image Function
-export const filterImage = (req: Request, res: Response) => {
-  imageModel.filterImage(req.params.imageName, req.body.type, req.body.value);
+export const filterImage = async (req: Request, res: Response) => {
+  await imageModel.filterImage(
+    req.params.imageName,
+    req.body.type,
+    req.body.value
+  );
   res.status(200).json({ message: "Image filterd successfully" });
 };
 
 // Watermarking Image Function
-export const waterMarkingImage = (req: Request, res: Response) => {
+export const waterMarkingImage = async (
+  req: Request,
+  res: Response
+): Promise<any> => {
+  let message: string = "";
   if (req.file) {
-    imageModel.waterMarkingImage(
+    message = await imageModel.waterMarkingImage(
       req.params.imageName,
       req.file.originalname,
       req.body.x,
       req.body.y
     );
+  }
+  if (message) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message: message,
+    });
   }
   res.status(200).json({ message: "Image filterd successfully" });
 };

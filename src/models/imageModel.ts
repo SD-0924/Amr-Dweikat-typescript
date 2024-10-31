@@ -220,7 +220,11 @@ export const waterMarkingImage = async (
       path.join(__dirname, "..", "images", imageName),
       filteredImage
     );
-  } catch (err) {
-    console.log(err);
+  } catch (error) {
+    if (error instanceof Error) {
+      return error.message;
+    } else {
+      return error;
+    }
   }
 };
