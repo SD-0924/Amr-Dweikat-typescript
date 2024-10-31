@@ -42,7 +42,7 @@ const fileFilter = (
   cb: multer.FileFilterCallback
 ) => {
   if (!isValidImage(file.originalname)) {
-    req.fileFilterMessage = "You should upload image";
+    req.fileFilterMessage = "Invalid image file";
     return cb(null, false);
   }
 

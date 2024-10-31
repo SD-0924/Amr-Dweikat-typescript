@@ -18,7 +18,8 @@ export const uploadImage = (req: Request, res: Response): any => {
     }
     return res.status(400).json({
       error: "Invalid body request",
-      message: "You should provide image file",
+      message:
+        "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
     });
   }
   res.status(201).json({ message: "Image uploaded successfully" });
