@@ -43,6 +43,28 @@ export const validateImageName = (
   next();
 };
 
+// Middlware to check if user uploaed image or not
+export const validateImage = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (!req.file) {
+    if (req.fileFilterMessage) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message: req.fileFilterMessage,
+      });
+    }
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "The body request should be in form-data format also should contain 'image' as key and only one image file as value",
+    });
+  }
+  next();
+};
+
 // Middlware to check image exist or not
 export const imageExists = (
   req: Request,

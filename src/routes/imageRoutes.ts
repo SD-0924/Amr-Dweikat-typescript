@@ -15,6 +15,7 @@ const router = Router();
 router.post(
   "/upload",
   imageModel.upload.single("image"),
+  middlewares.validateImage,
   imageController.uploadImage
 );
 
@@ -49,12 +50,23 @@ router.get(
   imageController.downloadImage
 );
 
-// Route for image filter
+// Route for image filter (grayscale and blur)
 router.put(
   "/filter/:imageName",
   middlewares.validateImageName,
   middlewares.imageExists,
   express.json(),
+  middlewares.typePropertyExists,
+  middlewares.validateTypeProperty,
+  imageController.filterImage
+);
+
+// Route for image filter (watermarking)
+router.put(
+  "/filter/:imageName",
+  middlewares.validateImageName,
+  middlewares.imageExists,
+  imageModel.upload.single("image"),
   middlewares.typePropertyExists,
   middlewares.validateTypeProperty,
   imageController.filterImage
