@@ -117,3 +117,22 @@ export const validateImageResolution = (
 
   next();
 };
+
+// Middlware to check image already downloaded or not
+export const alreadyDownloaded = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (
+    fs.existsSync(
+      path.join("C:", "Users", "pc", "Downloads", req.params.imageName)
+    )
+  ) {
+    return res.status(400).json({
+      error: "Image already downloaded",
+      message: "The provided image that you want to download already download",
+    });
+  }
+  next();
+};

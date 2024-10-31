@@ -29,4 +29,13 @@ router.put(
   imageController.croppImage
 );
 
+// Route for image download
+router.get(
+  "/download/:imageName",
+  middlewares.validateImageName,
+  middlewares.imageExists,
+  middlewares.alreadyDownloaded,
+  imageController.downloadImage
+);
+
 export default router;

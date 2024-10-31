@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 // Import all methods from imageModel module
 import * as imageModel from "../models/imageModel";
 
+// Import path module
+import path from "path";
+
 // Upload Image Function
 export const uploadImage = (req: Request, res: Response): any => {
   if (!req.file) {
@@ -31,4 +34,17 @@ export const croppImage = async (req: Request, res: Response) => {
     req.body.y
   );
   res.status(200).json({ message: "Image cropped successfully" });
+};
+
+// Download Image Function
+export const downloadImage = (req: Request, res: Response) => {
+  imageModel.downloadImage(req.params.imageName);
+  res.status(200).json({
+    message: `Image downloaded successfully and you can find it at this path: ${path.join(
+      "C:",
+      "Users",
+      "pc",
+      "Downloads"
+    )}`,
+  });
 };

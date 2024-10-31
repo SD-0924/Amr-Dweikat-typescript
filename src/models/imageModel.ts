@@ -80,3 +80,14 @@ export const croppImage = async (
     croppedImage
   );
 };
+
+// Download Image Function
+export const downloadImage = (imageName: string): void => {
+  try {
+    const src = path.join(__dirname, "..", "images", imageName);
+    const des = path.join("C:", "Users", "pc", "Downloads", imageName);
+    fs.copyFileSync(src, des);
+  } catch (err) {
+    console.log(err);
+  }
+};
