@@ -70,7 +70,7 @@ router.patch(
   middlewares.validateImage,
   middlewares.xAndYProperitiesExists,
   middlewares.validatexAndYProperities,
-  imageController.filterImage
+  imageController.waterMarkingImage
 );
 
 export default router;

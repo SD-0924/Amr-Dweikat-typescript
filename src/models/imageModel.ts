@@ -195,3 +195,25 @@ export const filterImage = async (
     console.log(err);
   }
 };
+
+// Watermarking Image Function
+export const waterMarkingImage = async (
+  imageName: string,
+  waterMarkingImage: string | undefined,
+  x: string,
+  y: string
+): Promise<any> => {
+  try {
+    const imageBuffer = fs.readFileSync(
+      path.join(__dirname, "..", "images", imageName)
+    );
+
+    const filteredImage = await sharp(imageBuffer).greyscale().toBuffer();
+    fs.writeFileSync(
+      path.join(__dirname, "..", "images", imageName),
+      filteredImage
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
