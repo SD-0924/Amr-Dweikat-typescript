@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 import multer from "multer";
 
 // Import sharp module
-import sharp from "sharp";
+import sharp, { OverlayOptions } from "sharp";
 
 // Import path module
 import path from "path";
@@ -199,7 +199,7 @@ export const filterImage = async (
 // Watermarking Image Function
 export const waterMarkingImage = async (
   imageName: string,
-  waterMarkingImage: string | undefined,
+  waterMarkingImage: string,
   x: string,
   y: string
 ): Promise<any> => {
@@ -208,7 +208,14 @@ export const waterMarkingImage = async (
       path.join(__dirname, "..", "images", imageName)
     );
 
-    const filteredImage = await sharp(imageBuffer).greyscale().toBuffer();
+    const overlay: OverlayOptions = {
+      input: path.join(__dirname, "..", "uploads", waterMarkingImage),
+      left: Number(x),
+      top: Number(y),
+    };
+    const filteredImage = await sharp(imageBuffer)
+      .composite([overlay])
+      .toBuffer();
     fs.writeFileSync(
       path.join(__dirname, "..", "images", imageName),
       filteredImage
