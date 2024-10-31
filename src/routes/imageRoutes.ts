@@ -49,4 +49,15 @@ router.get(
   imageController.downloadImage
 );
 
+// Route for image filter
+router.put(
+  "/filter/:imageName",
+  middlewares.validateImageName,
+  middlewares.imageExists,
+  express.json(),
+  middlewares.typePropertyExists,
+  middlewares.validateTypeProperty,
+  imageController.filterImage
+);
+
 export default router;

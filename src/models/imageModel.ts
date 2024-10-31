@@ -138,3 +138,31 @@ export const downloadImage = (imageName: string): void => {
     console.log(err);
   }
 };
+
+// Filter Image Function
+export const filterImage = async (
+  imageName: string,
+  type: string,
+  value?: number
+): Promise<any> => {
+  try {
+    const imageBuffer = fs.readFileSync(
+      path.join(__dirname, "..", "images", imageName)
+    );
+    if (type === "greyscale") {
+      const filteredImage = await sharp(imageBuffer).greyscale().toBuffer();
+      fs.writeFileSync(
+        path.join(__dirname, "..", "images", imageName),
+        filteredImage
+      );
+    } else if (type === "blur") {
+      const filteredImage = await sharp(imageBuffer).blur(value).toBuffer();
+      fs.writeFileSync(
+        path.join(__dirname, "..", "images", imageName),
+        filteredImage
+      );
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};

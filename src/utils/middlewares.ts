@@ -153,3 +153,59 @@ export const alreadyDownloaded = (
   }
   next();
 };
+
+// Middlware to check type property provided or not
+export const typePropertyExists = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (!req.body || !req.body.hasOwnProperty("type")) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "You need to provide valid JSON structue that contains the 'type' property",
+    });
+  }
+
+  next();
+};
+
+// Middlware to check the value of type property
+export const validateTypeProperty = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): any => {
+  if (
+    typeof req.body.type !== "string" ||
+    (req.body.type !== "greyscale" && req.body.type !== "blur")
+  ) {
+    return res.status(400).json({
+      error: "Invalid body request",
+      message:
+        "The value of the 'type' property should be in string format and must be one of the following values: greyscale or blur",
+    });
+  }
+  if (req.body.type === "blur") {
+    if (!req.body.hasOwnProperty("value")) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message: "You need to provide the 'value' property to blur the image",
+      });
+    }
+    if (
+      typeof req.body.value !== "number" ||
+      req.body.value <= 0 ||
+      req.body.value > 100
+    ) {
+      return res.status(400).json({
+        error: "Invalid body request",
+        message:
+          "The value of the 'value' property should be greater than 0 and less than or equal to 100",
+      });
+    }
+  }
+
+  next();
+};
